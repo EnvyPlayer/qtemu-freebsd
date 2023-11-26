@@ -78,3 +78,5 @@ started as a project work for school.
 Ben Klopfenstein <benklop gmail com> began adding some features
 he wanted, and is now rather involved in writing the next few
 versions. He also uses it for school.
+
+Anthony Nicholas Malczanek made this compile and run on FreeBSD 13.2 to 15.0 with either Qt5 or Qt6. Was going to clean it up for ports at some point.
