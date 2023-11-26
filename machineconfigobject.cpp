@@ -101,7 +101,7 @@ void MachineConfigObject::registerObject(QObject *object, const QString &nodeTyp
         QStringList options = myConfig->getAllOptionNames(nodeType, nodeName);
         for(int i=0;i<options.size();i++)
         {
-            object->setProperty(options.at(i).toAscii(), myConfig->getOption(nodeType, nodeName, options.at(i)));
+            object->setProperty(options.at(i).toLatin1(), myConfig->getOption(nodeType, nodeName, options.at(i)));
         }
 
         //add event filter
@@ -137,7 +137,7 @@ void MachineConfigObject::unregisterObject(QObject *object)
         QStringList options = myConfig->getAllOptionNames(object->property("nodeType").toString(), object->property("nodeName").toString());
         for(int i=0;i<options.size();i++)
         {
-            object->setProperty(options.at(i).toAscii(), QVariant());
+            object->setProperty(options.at(i).toLatin1(), QVariant());
         }
         object->removeEventFilter(this);
     }
@@ -158,7 +158,7 @@ void MachineConfigObject::setObjectValue(QObject * object, const QString &nodeTy
     //get the value from the config
     QVariant value = getOption(nodeType, nodeName, optionName, defaultValue);
 #ifdef DEVELOPER
-    //qDebug("setting object for " + optionName.toAscii() + " to " + value.toByteArray());
+    //qDebug("setting object for " + optionName.toLatin1() + " to " + value.toByteArray());
 #endif
     //disconnect so that we don't go in a loop forever
 
@@ -168,8 +168,8 @@ void MachineConfigObject::setObjectValue(QObject * object, const QString &nodeTy
     if(object->property("optionName").isNull())
     {
         object->removeEventFilter(this);
-        if(object->property(optionName.toAscii()) != value)
-            object->setProperty(optionName.toAscii(), value);
+        if(object->property(optionName.toLatin1()) != value)
+            object->setProperty(optionName.toLatin1(), value);
         object->installEventFilter(this);
     }
     //QButtonGroup handling is tricky...
@@ -271,7 +271,7 @@ void MachineConfigObject::setObjectValue(QObject * object, const QString &nodeTy
         //qDebug("unknown object type" + QByteArray(object->metaObject()->className()));
         //we set a single property (the option name) to the value.
         object->removeEventFilter(this);
-        object->setProperty(optionName.toAscii(), value);
+        object->setProperty(optionName.toLatin1(), value);
         object->installEventFilter(this);
     }
     //qDebug("set!");
@@ -291,7 +291,7 @@ bool MachineConfigObject::eventFilter(QObject * object, QEvent * event)
         nodeType = object->property("nodeType").toString();
         nodeName = object->property("nodeName").toString();
         optionName = myEvent->propertyName();
-        value = object->property(optionName.toAscii());
+        value = object->property(optionName.toLatin1());
         //save the option to the config
         setOption(nodeType, nodeName, optionName, value);
     }

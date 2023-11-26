@@ -25,7 +25,11 @@
 #include "machineconfigobject.h"
 #include "halobject.h"
 #include "qtemuenvironment.h"
+#if QT_VERSION >= 0x060000
+typedef QList<QString> QStringList;
+#else
 #include <QStringList>
+#endif
 #include <QStandardItem>
 
 UsbModel::UsbModel(MachineConfigObject * config, QObject * parent)
@@ -61,7 +65,7 @@ void UsbModel::getUsbDevices()
 void UsbModel::addItem(const QString deviceName, QString id)
 {
 #ifdef DEVELOPER
-    qDebug(QString(deviceName + ' ' + id).toAscii());
+    qDebug(QString(deviceName + ' ' + id).toLatin1());
 #endif
     QList<QStandardItem*> items;
     items.append(new QStandardItem(deviceName));
@@ -162,7 +166,7 @@ void UsbModel::getChange(QStandardItem * thisItem)
 void UsbModel::deviceAdded(QString name, UsbDevice device)
 {
 #ifdef DEVELOPER
-    qDebug(QString("device added " + device.vendor + '-' + device.product + device.id).toAscii());
+    qDebug(QString("device added " + device.vendor + '-' + device.product + device.id).toLatin1());
 #endif
     QString id = device.id;
     addItem(device.vendor + " - " + device.product, id.remove("/org/freedesktop/Hal/devices/usb_device_"));
@@ -186,7 +190,7 @@ void UsbModel::deviceRemoved(QString name, UsbDevice device)
         if((QString("/org/freedesktop/Hal/devices/usb_device_") + QString(item(i,1)->text())) == name)
         {
 #ifdef DEVELOPER
-            qDebug("device removed " + name.toAscii());
+            qDebug("device removed " + name.toLatin1());
 #endif
             this->removeRow(i);
             //getUsbDevices();

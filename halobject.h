@@ -29,6 +29,11 @@
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QHash>
+#if QT_VERSION >= 0x060000
+typedef QList<QString> QStringList;
+#else
+#include <QStringList>
+#endif
 
  struct UsbDevice
  {

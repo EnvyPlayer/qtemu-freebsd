@@ -34,6 +34,7 @@
 #include <QTimer>
 
 #include <signal.h>
+#include <unistd.h>
 
 MachineProcess::MachineProcess(MachineTab *parent)
   : QObject(parent)
@@ -230,7 +231,7 @@ QStringList MachineProcess::buildParamList()
         if (property("virtualization").toBool() == false)//dont want to use hardware
         {
             if(env.kvmSupport())
-                arguments << "-disable-kvm";//this may not exist or be right...
+//                arguments << "-disable-kvm";//this may not exist or be right...
             if(env.kqemuSupport())
                 arguments << "-no-kqemu";
         }
@@ -333,7 +334,7 @@ void MachineProcess::start()
     beforeRunExecute();
     
 #ifndef Q_OS_WIN32
-    process->start(settings.value("command", "qemu").toString(), arguments);
+    process->start(settings.value("command", "qemu-system-x86_64").toString(), arguments);
 #elif defined(Q_OS_WIN32)
     arguments << "-L" << ".";
     QString qemuCommand = settings.value("command", QCoreApplication::applicationDirPath() + "/qemu/qemu.exe").toString();
@@ -343,7 +344,7 @@ void MachineProcess::start()
     process->start(qemuCommand, arguments);
 #endif
 
-    emit cleanConsole(settings.value("command", "qemu").toString() + ' ' + arguments.join(" "));
+    emit cleanConsole(settings.value("command", "qemu-system-x86_64").toString() + ' ' + arguments.join(" "));
 
 }
 
@@ -475,7 +476,7 @@ void MachineProcess::resume(const QString & snapshotName)
     snapshotNameString = snapshotName;
     if(process->state()==QProcess::Running)
     {
-        write("loadvm " + snapshotName.toAscii() + '\n');
+        write("loadvm " + snapshotName.toLatin1() + '\n');
         emit resuming(snapshotName);
     }
     else
@@ -512,7 +513,7 @@ void MachineProcess::suspend(const QString & snapshotName)
         sleep(2);//wait for the guest OS to notice
     }
     write("stop\n");
-    write("savevm " + snapshotName.toAscii() + '\n');
+    write("savevm " + snapshotName.toLatin1() + '\n');
     emit stateChanged(MachineProcess::Saving);
     connect(this, SIGNAL(stdout(const QString&)),this,SLOT(suspendFinished(const QString&)));
 }
@@ -572,7 +573,7 @@ void MachineProcess::readProcess()
         }
     }
     outputParts = lastOutput.split("(qemu)");
-    //qDebug(outputParts.last().toAscii());
+    //qDebug(outputParts.last().toLatin1());
 }
 
 void MachineProcess::readProcessErrors()
@@ -603,7 +604,7 @@ qint64 MachineProcess::write ( const QByteArray & byteArray )
     void MachineProcess::writeDebugInfo(const QString & debugText)
 {
 #ifdef DEVELOPER
-    qDebug(debugText.toAscii());
+    qDebug(debugText.toLatin1());
 #endif
 }
 

@@ -30,8 +30,11 @@
 
 class QFile;
 class QDomDocument;
-class QStringList;
-
+#if QT_VERSION >= 0x060000
+typedef QList<QString> QStringList;
+#else
+#include <QStringList>
+#endif
 
 /**
 	@author Ben Klopfenstein <benklop@gmail.com>

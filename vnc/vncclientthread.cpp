@@ -25,6 +25,7 @@
 
 #include <QMutexLocker>
 #include <QTimer>
+#include <stdio.h>
 
 static QString outputErrorMessageString;
 
@@ -120,6 +121,15 @@ char *VncClientThread::passwdHandler(rfbClient *cl)
     return strdup(t->password().toLocal8Bit());
 }
 
+QString &VncClientThread::sprintf(char *cformat, ...)
+{
+//    va_list ap;
+//    va_start(ap, cformat);
+//    QString &s = std::sprintf(cformat, ap);
+//    va_end(ap);
+//    return s;
+}
+
 void VncClientThread::outputHandler(const char *format, ...)
 {
     va_list args;
@@ -127,6 +137,7 @@ void VncClientThread::outputHandler(const char *format, ...)
 
     QString message;
     message.vsprintf(format, args);
+    //QString message = VncClientThread::sprintf(format, args);
 
     va_end(args);
 

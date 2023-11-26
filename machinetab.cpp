@@ -416,7 +416,7 @@ void MachineTab::snapshot(const int state)
 
 void MachineTab::runCommand()
 {
-    machineProcess->write(consoleCommand->text().toAscii() + '\n');
+    machineProcess->write(consoleCommand->text().toLatin1() + '\n');
     consoleCommand->clear();
 }
 
@@ -459,7 +459,7 @@ void MachineTab::cleanupView()
 void MachineTab::takeScreenshot()
 {
     QString fileName = machineConfigObject->getOption("hdd",QString()).toString().replace(QRegExp("[.][^.]+$"), ".ppm");
-    machineProcess->write(QString("screendump " + fileName).toAscii() + '\n');
+    machineProcess->write(QString("screendump " + fileName).toLatin1() + '\n');
     machineConfigObject->setOption("preview", fileName);
 }
 

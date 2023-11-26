@@ -226,7 +226,7 @@ void ConfigWindow::loadSettings()
     QSettings settings("QtEmu", "QtEmu");
     beforeStartExeTextEdit->setPlainText(settings.value("beforeStart").toString());
 #ifndef Q_OS_WIN32
-    commandLineEdit->setText(settings.value("command", "qemu").toString());
+    commandLineEdit->setText(settings.value("command", "qemu-system-x86_64").toString());
 #elif defined(Q_OS_WIN32)
     commandLineEdit->setText(settings.value("command", QCoreApplication::applicationDirPath() + "/qemu/qemu.exe").toString());
 #endif

@@ -85,7 +85,7 @@ void GuestToolsListener::receiveData()
 
 void GuestToolsListener::addModules()
 {
-    modules.append(new ClipboardSync(this));
+    //modules.append(new ClipboardSync(this));
 }
 
 void GuestToolsListener::dataSender(QString module, QVariant &data)

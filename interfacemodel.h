@@ -35,7 +35,11 @@
 #define INTERFACEMODEL_H
 
 #include <QAbstractTableModel>
+#if QT_VERSION >= 0x060000
+typedef QList<QString> QStringList;
+#else
 #include <QStringList>
+#endif
 
 class MachineConfigObject;
 

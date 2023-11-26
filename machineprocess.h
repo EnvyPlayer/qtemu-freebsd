@@ -31,6 +31,12 @@
 #include "qtemuenvironment.h"
 #include "harddiskmanager.h"
 
+#if QT_VERSION >= 0x060000
+typedef QList<QString> QStringList;
+#else
+#include <QStringList>
+#endif
+
 class NetConfig;
 class UsbConfig;
 

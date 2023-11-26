@@ -60,9 +60,13 @@ SOURCES = main.cpp \
 
  include(GuestTools/modules/host.pri)
 RESOURCES = qtemu.qrc
-QT += xml \
+QT += \
+#    webenginewidgets \
+#    core5compat
+    xml \
     svg \
     webkit \
+    webkitwidgets \
     network \
     dbus
 win32 { 

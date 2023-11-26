@@ -27,6 +27,11 @@
 #include <QProcess>
 #include <QDir>
 #include <QString>
+#if QT_VERSION >= 0x060000
+typedef QList<QString> QStringList;
+#else
+#include <QStringList>
+#endif
 
 QtEmuEnvironment::QtEmuEnvironment()
 {
@@ -36,7 +41,7 @@ QtEmuEnvironment::QtEmuEnvironment()
         hal = new HalObject();
 }
 
-QtEmuEnvironment::~ QtEmuEnvironment()
+QtEmuEnvironment::~   QtEmuEnvironment()
 {
 
 }
@@ -49,7 +54,7 @@ void QtEmuEnvironment::getVersion()
     QProcess *findVersion = new QProcess();
 
 #ifndef Q_OS_WIN32
-    const QString qemuCommand = settings.value("command", "qemu").toString();
+    const QString qemuCommand = settings.value("command", "qemu-system-x86_64").toString();
 #elif defined(Q_OS_WIN32)
     const QString qemuCommand = settings.value("command", QCoreApplication::applicationDirPath() + "/qemu/qemu.exe").toString();
     QDir path(qemuCommand);
@@ -82,13 +87,13 @@ void QtEmuEnvironment::getVersion()
 
     QStringList infoStringList = infoString.split(' ');
     
-    versionString = infoStringList.at(4);
+    versionString = infoStringList.at(3);
 
     QStringList versionStringList = versionString.split('.');
     qemuVersion[0] = versionStringList.at(0).toInt();
     qemuVersion[1] = versionStringList.at(1).toInt();
     qemuVersion[2] = versionStringList.at(2).toInt();
-    versionString = infoStringList.at(5);
+    versionString = infoStringList.length() >= 6 ? infoStringList.at(5) : "";
 
     if(versionString.contains(QRegExp("kvm")))
     {
@@ -120,7 +125,7 @@ void QtEmuEnvironment::getVersion()
     versionChecked = true;
 
     #ifdef DEVELOPER
-    qDebug(("kvm: " + QString::number(kvmVersion) + " qemu: " + QString::number(qemuVersion[0]) + '.' + QString::number(qemuVersion[1]) + '.' + QString::number(qemuVersion[2])).toAscii());
+    qDebug(("kvm: " + QString::number(kvmVersion) + " qemu: " + QString::number(qemuVersion[0]) + '.' + QString::number(qemuVersion[1]) + '.' + QString::number(qemuVersion[2])).toLatin1());
     #endif
 }
 

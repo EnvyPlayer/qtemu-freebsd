@@ -123,7 +123,8 @@ void InterfaceModel::optionChanged(const QString & nodeType, const QString & nod
 {
     if(nodeType == this->nodeType)
     {
-        reset();
+	beginResetModel();
+	endResetModel();
     }
 }
 

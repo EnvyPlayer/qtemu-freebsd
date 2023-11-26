@@ -132,7 +132,7 @@ void ControlPanel::saveScreenshot()
     if(!fileName.endsWith(".ppm"))
         fileName = fileName + ".ppm";
 
-    parent->machineProcess->write(QString("screendump " + fileName).toAscii() + '\n');
+    parent->machineProcess->write(QString("screendump " + fileName).toLatin1() + '\n');
 }
 
 void ControlPanel::running()

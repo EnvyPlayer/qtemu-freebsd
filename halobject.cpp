@@ -68,8 +68,8 @@ void HalObject::halDeviceAdded(QString name)
     emit deviceAdded(name);
 
 #ifdef DEVELOPER
-    qDebug(name.toAscii());
-    qDebug("capabilities:" + QVariant(tempInterface->call("GetPropertyStringList", "info.capabilities").arguments()).toStringList().join(", ").toAscii());
+    qDebug(name.toLatin1());
+    qDebug("capabilities:" + QVariant(tempInterface->call("GetPropertyStringList", "info.capabilities").arguments()).toStringList().join(", ").toLatin1());
 #endif
     //USB device that is not a hub added...
     if(tempInterface->call("GetProperty", "info.subsystem").arguments().at(0).toString() == "usb_device" &&
@@ -126,7 +126,7 @@ void HalObject::halDeviceRemoved(QString name)
     emit(deviceRemoved(name));
 
 #ifdef DEVELOPER
-    qDebug(name.toAscii());
+    qDebug(name.toLatin1());
 #endif
 
     //USB device that is not a hub deleted...

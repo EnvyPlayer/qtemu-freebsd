@@ -117,6 +117,8 @@ public:
     RemoteView::Quality quality() const;
     uint8_t *frameBuffer;
 
+    static QString &sprintf(char *cformat, ...);
+
 signals:
     void imageUpdated(int x, int y, int w, int h);
     void gotCut(const QString &text);

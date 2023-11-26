@@ -29,7 +29,11 @@
 #include <QDomText>
 #include <QString>
 #include <QTextStream>
+#if QT_VERSION >= 0x060000
+typedef QList<QString> QStringList;
+#else
 #include <QStringList>
+#endif
 
 MachineConfig::MachineConfig(QObject *parent, const QString &config)
  : QObject(parent)
@@ -50,7 +54,7 @@ bool MachineConfig::loadConfig(const QString &fileName)
     configFile = new QFile(fileName);
     if (!configFile->open(QFile::ReadOnly | QFile::Text))
     {
-        qDebug("Cannot read file" + fileName.toAscii() + ", " + configFile->errorString().toAscii());
+        qDebug("Cannot read file" + fileName.toLatin1() + ", " + configFile->errorString().toLatin1());
         domDocument.appendChild(domDocument.createElement("qtemu"));
         root = domDocument.documentElement();
         return false;
@@ -62,7 +66,7 @@ bool MachineConfig::loadConfig(const QString &fileName)
 
     if (!domDocument.setContent(configFile, true, &errorStr, &errorLine, &errorColumn))
     {
-       qDebug("Parse error at line %1, column %2:\n" + errorStr.toAscii(), errorLine, errorColumn);
+       qDebug("Parse error at line %1, column %2:\n" + errorStr.toLatin1(), errorLine, errorColumn);
         return false;
     }
 
@@ -85,7 +89,7 @@ bool MachineConfig::saveConfig(const QString &fileName) const
     QFile file(fileName);
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
-        qDebug("Cannot write file " + fileName.toAscii() +":\n" + file.errorString().toAscii());
+        qDebug("Cannot write file " + fileName.toLatin1() +":\n" + file.errorString().toLatin1());
         return false;
     }
 

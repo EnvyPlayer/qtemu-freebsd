@@ -76,7 +76,7 @@ void MachineView::initView()
     }
 
 //#ifdef DEVELOPER
-    qDebug("connecting to:" + url.toString().toAscii());
+    qDebug("connecting to:" + url.toString().toLatin1());
 //#endif
     view = new VncView(this, url);
     view->start();

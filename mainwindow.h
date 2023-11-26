@@ -32,7 +32,11 @@ class QTabWidget;
 class QPushButton;
 class QWidget;
 class QLabel;
-class QStringList;
+#if QT_VERSION >= 0x060000
+typedef QList<QString> QStringList;
+#else
+#include <QStringList>
+#endif
 
 class MainWindow : public QMainWindow
 {

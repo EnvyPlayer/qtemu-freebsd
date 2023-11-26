@@ -27,7 +27,11 @@
 #include <QObject>
 #include <QString>
 #include <QList>
+#if QT_VERSION >= 0x060000
+   typedef QList<QString> QStringList;
+#else
 #include <QStringList>
+#endif
 
 class MachineConfigObject;
 class GuestInterface;
